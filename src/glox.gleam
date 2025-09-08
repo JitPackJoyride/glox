@@ -1,8 +1,11 @@
 import argv
 import gleam/int
 import gleam/io
+import gleam/list
 import input/input.{input}
+import scanner
 import simplifile
+import token
 
 pub type LoxError {
   SyntaxError(line: Int, where: String, message: String)
@@ -57,7 +60,9 @@ fn run_prompt() -> Result(Nil, LoxError) {
 }
 
 fn run(source: String) -> Result(Nil, LoxError) {
-  Ok(io.println(source))
+  scanner.scan_tokens(source)
+  |> list.each(fn(token) { token.to_string(token) |> io.println })
+  Ok(Nil)
 }
 
 fn report(error: LoxError) -> String {
